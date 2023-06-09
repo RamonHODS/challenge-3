@@ -17,11 +17,11 @@ function writePassword() {
   var correctPrompts = getPrompts();
   var passwordText = document.querySelector("#password");
   
-  if (correctPrompts){
+  if (correctPrompts) {
     var newPassword = generatePassword();
     passwordText.value = newPassword;
   } else {
-    passwordTest.value = "";
+    passwordText.value = "";
   }
 }
 
@@ -29,16 +29,20 @@ function generatePassword() {
   var password = "";
   for (var i = 0; i < passwordLength; i++) {
     var randomIndex = Math.floor(Math.random() * passwordArray.length);
-    password = password + passwordArray[randomIndex];
+    password += passwordArray[randomIndex];
   }
   return password;
-
 }
 
 function getPrompts() {
-  var passwordArray = [];
+  passwordArray = [];
   
-  passwordLength = parseInt (prompt("Please enter a desired password length number (8 - 128 characters)"))
+  passwordLength = parseInt(prompt("Please enter a desired password length (8 - 128 characters)"));
+
+  if (isNaN(passwordLength) || passwordLength < 8 || passwordLength > 128) {
+    alert("Invalid password length. Please enter a number between 8 and 128.");
+    return false;
+  }
 
   if (confirm("Would you like lowercase letters in this password?")) {
     passwordArray = passwordArray.concat(lowerCase);
@@ -55,5 +59,11 @@ function getPrompts() {
   if (confirm("Would you like numbers in this password?")) {
     passwordArray = passwordArray.concat(numbers);
   }
+
+  if (passwordArray.length === 0) {
+    alert("You must select at least one character type.");
+    return false;
+  }
+
   return true;
 }
